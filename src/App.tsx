@@ -2,14 +2,13 @@ import React from 'react';
 import './App.scss';
 
 import Scene from './components/Scene';
+import Hero from './components/Hero';
 
 function App() {
 	return (
 		<>
 			<Scene />
-			<div className='title'>
-				<h1>Hero</h1>
-			</div>
+			<Hero />
 		</>
 	);
 }

@@ -1,10 +1,9 @@
 import * as BABYLON from '@babylonjs/core';
-import * as earcut from 'earcut';
-(window as any).earcut = earcut;
+import { isMobile } from 'react-device-detect';
 
 const sphere = (scene: BABYLON.Scene, camera: BABYLON.Camera) => {
 	// Material ---------------------
-	const material = new BABYLON.StandardMaterial('sphereMaterial', scene);
+	const material = new BABYLON.StandardMaterial('sphere', scene);
 	material.diffuseTexture = new BABYLON.Texture(
 		'./Wall_Rock_basecolor.jpg',
 		scene
@@ -51,9 +50,9 @@ const sphere = (scene: BABYLON.Scene, camera: BABYLON.Camera) => {
 			});
 			bulb.position = new BABYLON.Vector3(0, 1, 0);
 			bulb.material = bulbMaterial;
+			bulb.parent = sphere;
 
 			// God rays -------------------------------------------
-
 			const godrays = new BABYLON.VolumetricLightScatteringPostProcess(
 				'godrays',
 				1.0,
@@ -84,7 +83,7 @@ const sphere = (scene: BABYLON.Scene, camera: BABYLON.Camera) => {
 
 			// godrays.alphaMode = BABYLON.Constants.ALPHA_COMBINE;
 
-			// Animation ----------------
+			// Sphere Animation ----------------
 			const animation = new BABYLON.Animation(
 				'sphereAnimation',
 				'rotation.y',
@@ -106,43 +105,47 @@ const sphere = (scene: BABYLON.Scene, camera: BABYLON.Camera) => {
 			sphere.animations.push(animation);
 			const animatable = scene.beginAnimation(sphere, 0, 60, true);
 
-			// Mouse events --------------------------------
+			// Pointer event --------------------------------
 			let timeout: NodeJS.Timeout;
 
-			const easeIn = () => {
+			const easeOut = () => {
 				if (animatable.speedRatio > 1.1) {
 					animatable.speedRatio -= 0.1;
-					setTimeout(easeIn, 25);
+					setTimeout(easeOut, 40);
 				} else if (animatable.speedRatio < 0.9) {
 					animatable.speedRatio += 0.1;
-					setTimeout(easeIn, 25);
+					setTimeout(easeOut, 40);
 				} else {
-					console.log('set 1');
 					animatable.speedRatio = 1;
 				}
 			};
 
-			scene.onPointerObservable.add((pointerInfo) => {
-				switch (pointerInfo.type) {
-					case BABYLON.PointerEventTypes.POINTERMOVE:
-						const x = pointerInfo.event.movementX;
-						if (
-							(x > 0 && animatable.speedRatio >= 1) ||
-							(x < 0 && animatable.speedRatio <= -1)
-						) {
-							animatable.speedRatio += x / 100;
-						} else if (
-							(x < 0 && animatable.speedRatio >= 1) ||
-							(x > 0 && animatable.speedRatio <= 1)
-						) {
-							animatable.speedRatio += x / 50;
-						} else {
-							animatable.speedRatio += x / 100;
-						}
+			!isMobile &&
+				scene.onPointerObservable.add((pointerInfo) => {
+					switch (pointerInfo.type) {
+						case BABYLON.PointerEventTypes.POINTERMOVE:
+							const x = pointerInfo.event.movementX;
+							const speedAmplifier = 75;
+							if (
+								(x > 0 && animatable.speedRatio >= 1) ||
+								(x < 0 && animatable.speedRatio <= -1)
+							) {
+								animatable.speedRatio += x / (speedAmplifier * 2);
+							} else {
+								animatable.speedRatio += x / speedAmplifier;
+							}
 
-						timeout && clearTimeout(timeout);
-						timeout = setTimeout(() => easeIn(), 1000);
-				}
+							timeout && clearTimeout(timeout);
+							timeout = setTimeout(() => easeOut(), 1000);
+					}
+				});
+
+			// Scroll animation ---------------------------
+			window.addEventListener('scroll', () => {
+				const scrollYProgress = window.scrollY / window.innerHeight;
+				light.intensity = 1 + scrollYProgress * 2;
+				sphere.scaling.setAll(1 + scrollYProgress * 3);
+				bulb.scaling.setAll(1 + scrollYProgress * 2.5);
 			});
 
 			return sphere;

@@ -27,13 +27,22 @@ const Scene = () => {
 
 		getSphere(scene, camera);
 
-		scene.debugLayer.show();
+		const pipeline = new BABYLON.DefaultRenderingPipeline(
+			'pipeline',
+			true,
+			scene,
+			[camera]
+		);
+		pipeline.samples = 8;
+		pipeline.fxaaEnabled = true;
+
+		// scene.debugLayer.show();
 	};
 
-	const onRender = (scene: BABYLON.Scene) => {};
 	/**
 	 * Will run on every frame render.
 	 */
+	const onRender = (scene: BABYLON.Scene) => {};
 
 	return (
 		<SceneComponent
