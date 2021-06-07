@@ -94,15 +94,56 @@ const sphere = (scene: BABYLON.Scene, camera: BABYLON.Camera) => {
 			);
 
 			sphere.rotationQuaternion = null;
+			const rotationSpeed = 0.25;
 
 			const keys = [
 				{ frame: 0, value: 0 },
-				{ frame: 60, value: sphere.rotation.y + 0.25 },
+				{ frame: 60, value: rotationSpeed },
 			];
 
 			animation.setKeys(keys);
+
 			sphere.animations.push(animation);
-			scene.beginAnimation(sphere, 0, 60, true);
+			const animatable = scene.beginAnimation(sphere, 0, 60, true);
+
+			// Mouse events --------------------------------
+			let timeout: NodeJS.Timeout;
+
+			const easeIn = () => {
+				if (animatable.speedRatio > 1.1) {
+					animatable.speedRatio -= 0.1;
+					setTimeout(easeIn, 25);
+				} else if (animatable.speedRatio < 0.9) {
+					animatable.speedRatio += 0.1;
+					setTimeout(easeIn, 25);
+				} else {
+					console.log('set 1');
+					animatable.speedRatio = 1;
+				}
+			};
+
+			scene.onPointerObservable.add((pointerInfo) => {
+				switch (pointerInfo.type) {
+					case BABYLON.PointerEventTypes.POINTERMOVE:
+						const x = pointerInfo.event.movementX;
+						if (
+							(x > 0 && animatable.speedRatio >= 1) ||
+							(x < 0 && animatable.speedRatio <= -1)
+						) {
+							animatable.speedRatio += x / 100;
+						} else if (
+							(x < 0 && animatable.speedRatio >= 1) ||
+							(x > 0 && animatable.speedRatio <= 1)
+						) {
+							animatable.speedRatio += x / 50;
+						} else {
+							animatable.speedRatio += x / 100;
+						}
+
+						timeout && clearTimeout(timeout);
+						timeout = setTimeout(() => easeIn(), 1000);
+				}
+			});
 
 			return sphere;
 		}

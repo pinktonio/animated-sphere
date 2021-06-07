@@ -7,6 +7,9 @@ function App() {
 	return (
 		<>
 			<Scene />
+			<div className='title'>
+				<h1>Hero</h1>
+			</div>
 		</>
 	);
 }

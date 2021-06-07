@@ -18,12 +18,12 @@ const Scene = () => {
 			'camera',
 			Math.PI / 2,
 			Math.PI / 3,
-			4,
+			8,
 			BABYLON.Vector3.Zero(),
 			scene
 		);
 		camera.setTarget(BABYLON.Vector3.Zero());
-		camera.attachControl(canvas);
+		// camera.attachControl(canvas);
 
 		getSphere(scene, camera);
 

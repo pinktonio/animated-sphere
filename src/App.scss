@@ -3,6 +3,7 @@ html {
 
 body {
 	height: 200vh;
+	color: white;
 	background-color: rgb(18, 22, 34);
 	canvas {
 		position: fixed;
@@ -14,5 +15,17 @@ body {
 	#inspector-host {
 		z-index: 10;
 		position: fixed !important;
+	}
+
+	.title {
+		margin: 0 auto;
+		display: flex;
+		justify-content: center;
+		margin-top: 90vh;
+		h1 {
+			text-align: center;
+			position: absolute;
+			z-index: 11;
+		}
 	}
 }
