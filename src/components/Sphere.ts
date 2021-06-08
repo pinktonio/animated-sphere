@@ -1,24 +1,31 @@
-import * as BABYLON from '@babylonjs/core';
+import {
+	Scene,
+	Camera,
+	StandardMaterial,
+	Texture,
+	Color3,
+	SceneLoader,
+	Vector3,
+	PointLight,
+	MeshBuilder,
+	VolumetricLightScatteringPostProcess,
+	Animation,
+	PointerEventTypes,
+} from '@babylonjs/core';
 import { isMobile } from 'react-device-detect';
 
-const sphere = (scene: BABYLON.Scene, camera: BABYLON.Camera) => {
+const sphere = (scene: Scene, camera: Camera) => {
 	// Material ---------------------
-	const material = new BABYLON.StandardMaterial('sphere', scene);
-	material.diffuseTexture = new BABYLON.Texture(
-		'./Wall_Rock_basecolor.jpg',
-		scene
-	);
-	material.specularTexture = new BABYLON.Texture(
-		'./Wall_Rock_basecolor.jpg',
-		scene
-	);
-	material.diffuseColor = new BABYLON.Color3(1, 0, 0);
-	material.bumpTexture = new BABYLON.Texture('./Wall_Rock_normal.jpg', scene);
+	const material = new StandardMaterial('sphere', scene);
+	material.diffuseTexture = new Texture('./Wall_Rock_basecolor.jpg', scene);
+	material.specularTexture = new Texture('./Wall_Rock_basecolor.jpg', scene);
+	material.diffuseColor = new Color3(1, 0, 0);
+	material.bumpTexture = new Texture('./Wall_Rock_normal.jpg', scene);
 	material.diffuseTexture.scale(2);
 	material.diffuseTexture.level = 2;
 
 	// Import Mesh -----------------------
-	BABYLON.SceneLoader.ImportMeshAsync(
+	SceneLoader.ImportMeshAsync(
 		'voronoi_Sphere',
 		'./',
 		'sphere_holes.gltf',
@@ -28,38 +35,34 @@ const sphere = (scene: BABYLON.Scene, camera: BABYLON.Camera) => {
 
 		if (sphere) {
 			sphere.material = material;
-			sphere.position = BABYLON.Vector3.Zero();
+			sphere.position = Vector3.Zero();
 
 			// Light --------------------------
-			const light = new BABYLON.PointLight(
-				'sphereLight',
-				BABYLON.Vector3.Zero(),
-				scene
-			);
-			light.position = new BABYLON.Vector3(0, 1, 0);
+			const light = new PointLight('sphereLight', Vector3.Zero(), scene);
+			light.position = new Vector3(0, 1, 0);
 			light.intensity = 1;
-			light.diffuse = BABYLON.Color3.White();
-			light.specular = BABYLON.Color3.White();
+			light.diffuse = Color3.White();
+			light.specular = Color3.White();
 
 			// Bulb ---------------------------------
-			const bulbMaterial = new BABYLON.StandardMaterial('bulb', scene);
-			bulbMaterial.emissiveColor = BABYLON.Color3.White();
+			const bulbMaterial = new StandardMaterial('bulb', scene);
+			bulbMaterial.emissiveColor = Color3.White();
 
-			const bulb = BABYLON.MeshBuilder.CreateSphere('bulb', {
+			const bulb = MeshBuilder.CreateSphere('bulb', {
 				diameter: 0.5,
 			});
-			bulb.position = new BABYLON.Vector3(0, 1, 0);
+			bulb.position = new Vector3(0, 1, 0);
 			bulb.material = bulbMaterial;
 			bulb.parent = sphere;
 
 			// God rays -------------------------------------------
-			const godrays = new BABYLON.VolumetricLightScatteringPostProcess(
+			const godrays = new VolumetricLightScatteringPostProcess(
 				'godrays',
 				1.0,
 				camera,
 				bulb,
 				100,
-				BABYLON.Texture.BILINEAR_SAMPLINGMODE
+				Texture.BILINEAR_SAMPLINGMODE
 			);
 
 			godrays.exposure = 0.1;
@@ -71,7 +74,7 @@ const sphere = (scene: BABYLON.Scene, camera: BABYLON.Camera) => {
 			// 	scene
 			// 		.getEngine()
 			// 		.clear(
-			// 			new BABYLON.Color4(0, 0, 0, 0),
+			// 			new Color4(0, 0, 0, 0),
 			// 			scene._allowPostProcessClearColor,
 			// 			true,
 			// 			true
@@ -81,15 +84,15 @@ const sphere = (scene: BABYLON.Scene, camera: BABYLON.Camera) => {
 			// godrays.onBeforeRenderObservable.clear();
 			// godrays.onAfterRenderObservable.clear();
 
-			// godrays.alphaMode = BABYLON.Constants.ALPHA_COMBINE;
+			// godrays.alphaMode = Constants.ALPHA_COMBINE;
 
 			// Sphere Animation ----------------
-			const animation = new BABYLON.Animation(
+			const animation = new Animation(
 				'sphereAnimation',
 				'rotation.y',
 				60,
-				BABYLON.Animation.ANIMATIONTYPE_FLOAT,
-				BABYLON.Animation.ANIMATIONLOOPMODE_RELATIVE
+				Animation.ANIMATIONTYPE_FLOAT,
+				Animation.ANIMATIONLOOPMODE_RELATIVE
 			);
 
 			sphere.rotationQuaternion = null;
@@ -123,7 +126,7 @@ const sphere = (scene: BABYLON.Scene, camera: BABYLON.Camera) => {
 			!isMobile &&
 				scene.onPointerObservable.add((pointerInfo) => {
 					switch (pointerInfo.type) {
-						case BABYLON.PointerEventTypes.POINTERMOVE:
+						case PointerEventTypes.POINTERMOVE:
 							const x = pointerInfo.event.movementX;
 							const speedAmplifier = 75;
 							if (

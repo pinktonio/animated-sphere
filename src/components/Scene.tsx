@@ -1,38 +1,41 @@
 import React from 'react';
 import SceneComponent from 'babylonjs-hook';
-import * as BABYLON from '@babylonjs/core';
-import '@babylonjs/core/Debug/debugLayer';
-import '@babylonjs/inspector';
+import {
+	Scene,
+	Color4,
+	ArcRotateCamera,
+	Vector3,
+	DefaultRenderingPipeline,
+} from '@babylonjs/core';
+// import '@babylonjs/core/Debug/debugLayer';
+// import '@babylonjs/inspector';
 
 import getSphere from './Sphere';
 
-const Scene = () => {
-	const onSceneReady = async (scene: BABYLON.Scene) => {
+const SceneBuilder = () => {
+	const onSceneReady = async (scene: Scene) => {
 		const canvas = scene.getEngine().getRenderingCanvas();
 
 		// Makes background transparent
-		scene.clearColor = new BABYLON.Color4(0, 0, 0, 0);
+		scene.clearColor = new Color4(0, 0, 0, 0);
 
 		// Camera
-		const camera = new BABYLON.ArcRotateCamera(
+		const camera = new ArcRotateCamera(
 			'camera',
 			Math.PI / 2,
 			Math.PI / 3,
 			8,
-			BABYLON.Vector3.Zero(),
+			Vector3.Zero(),
 			scene
 		);
-		camera.setTarget(BABYLON.Vector3.Zero());
+		camera.setTarget(Vector3.Zero());
 		// camera.attachControl(canvas);
 
 		getSphere(scene, camera);
 
-		const pipeline = new BABYLON.DefaultRenderingPipeline(
-			'pipeline',
-			true,
-			scene,
-			[camera]
-		);
+		const pipeline = new DefaultRenderingPipeline('pipeline', true, scene, [
+			camera,
+		]);
 		pipeline.samples = 8;
 		pipeline.fxaaEnabled = true;
 
@@ -42,7 +45,7 @@ const Scene = () => {
 	/**
 	 * Will run on every frame render.
 	 */
-	const onRender = (scene: BABYLON.Scene) => {};
+	const onRender = (scene: Scene) => {};
 
 	return (
 		<SceneComponent
@@ -54,4 +57,4 @@ const Scene = () => {
 	);
 };
 
-export default Scene;
+export default SceneBuilder;
