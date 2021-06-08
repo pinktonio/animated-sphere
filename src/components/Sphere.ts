@@ -40,13 +40,6 @@ const sphere = (scene: Scene, camera: ArcRotateCamera) => {
 			sphere.material = material;
 			sphere.position = Vector3.Zero();
 
-			// Light --------------------------
-			const light = new PointLight('sphereLight', Vector3.Zero(), scene);
-			light.position = new Vector3(0, 1, 0);
-			light.intensity = 1;
-			light.diffuse = Color3.White();
-			light.specular = Color3.White();
-
 			// Bulb ---------------------------------
 			const bulbMaterial = new StandardMaterial('bulb', scene);
 			bulbMaterial.emissiveColor = Color3.White();
@@ -57,6 +50,13 @@ const sphere = (scene: Scene, camera: ArcRotateCamera) => {
 			bulb.position = new Vector3(0, 1, 0);
 			bulb.material = bulbMaterial;
 			bulb.parent = sphere;
+
+			// Light --------------------------
+			const light = new PointLight('sphereLight', Vector3.Zero(), scene);
+			light.intensity = 1;
+			light.diffuse = Color3.White();
+			light.specular = Color3.White();
+			light.parent = bulb;
 
 			// God rays -------------------------------------------
 			const godrays = new VolumetricLightScatteringPostProcess(
