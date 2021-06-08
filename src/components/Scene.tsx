@@ -1,16 +1,21 @@
 import React from 'react';
 import SceneComponent from 'babylonjs-hook';
-import {
-	Scene,
-	Color4,
-	ArcRotateCamera,
-	Vector3,
-	DefaultRenderingPipeline,
-} from '@babylonjs/core';
+
+// Babylonjs
+import { ArcRotateCamera } from '@babylonjs/core/Cameras/arcRotateCamera';
+import { Vector3 } from '@babylonjs/core/Maths/math';
+import { Color4 } from '@babylonjs/core/Maths/math.color';
+import { DefaultRenderingPipeline } from '@babylonjs/core/PostProcesses/RenderPipeline/Pipelines/defaultRenderingPipeline';
+
+// Babylonjs Dev Tools
 // import '@babylonjs/core/Debug/debugLayer';
 // import '@babylonjs/inspector';
 
+// Components
 import getSphere from './Sphere';
+
+// Types
+import type { Scene } from '@babylonjs/core/scene';
 
 const SceneBuilder = () => {
 	const onSceneReady = async (scene: Scene) => {

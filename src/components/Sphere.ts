@@ -1,19 +1,21 @@
-import {
-	Scene,
-	Camera,
-	StandardMaterial,
-	Texture,
-	Color3,
-	SceneLoader,
-	Vector3,
-	PointLight,
-	MeshBuilder,
-	VolumetricLightScatteringPostProcess,
-	Animation,
-	PointerEventTypes,
-} from '@babylonjs/core';
-import { isMobile } from 'react-device-detect';
+// Babylonjs
+import { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial';
+import { Texture } from '@babylonjs/core/Materials/Textures/texture';
+import { Vector3 } from '@babylonjs/core/Maths/math';
+import { Color3 } from '@babylonjs/core/Maths/math.color';
+import { SceneLoader } from '@babylonjs/core/Loading/sceneLoader';
+import { PointLight } from '@babylonjs/core/Lights/pointLight';
+import { SphereBuilder } from '@babylonjs/core/Meshes/Builders/sphereBuilder';
+import { VolumetricLightScatteringPostProcess } from '@babylonjs/core/PostProcesses/volumetricLightScatteringPostProcess';
+import { Animation } from '@babylonjs/core/Animations/animation';
+import { PointerEventTypes } from '@babylonjs/core/Events/pointerEvents';
 import '@babylonjs/loaders/glTF';
+
+import { isMobile } from 'react-device-detect';
+
+// Types
+import type { Scene } from '@babylonjs/core/scene';
+import type { Camera } from '@babylonjs/core/Cameras/camera';
 
 const sphere = (scene: Scene, camera: Camera) => {
 	// Material ---------------------
@@ -49,7 +51,7 @@ const sphere = (scene: Scene, camera: Camera) => {
 			const bulbMaterial = new StandardMaterial('bulb', scene);
 			bulbMaterial.emissiveColor = Color3.White();
 
-			const bulb = MeshBuilder.CreateSphere('bulb', {
+			const bulb = SphereBuilder.CreateSphere('bulb', {
 				diameter: 0.5,
 			});
 			bulb.position = new Vector3(0, 1, 0);
@@ -129,7 +131,7 @@ const sphere = (scene: Scene, camera: Camera) => {
 					switch (pointerInfo.type) {
 						case PointerEventTypes.POINTERMOVE:
 							const x = pointerInfo.event.movementX;
-							const speedAmplifier = 75;
+							const speedAmplifier = 50;
 							if (
 								(x > 0 && animatable.speedRatio >= 1) ||
 								(x < 0 && animatable.speedRatio <= -1)
