@@ -15,9 +15,9 @@ import { isMobile } from 'react-device-detect';
 
 // Types
 import type { Scene } from '@babylonjs/core/scene';
-import type { Camera } from '@babylonjs/core/Cameras/camera';
+import type { ArcRotateCamera } from '@babylonjs/core/Cameras/arcRotateCamera';
 
-const sphere = (scene: Scene, camera: Camera) => {
+const sphere = (scene: Scene, camera: ArcRotateCamera) => {
 	// Material ---------------------
 	const material = new StandardMaterial('sphere', scene);
 	material.diffuseTexture = new Texture('./Wall_Rock_basecolor.jpg', scene);
