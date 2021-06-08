@@ -13,6 +13,7 @@ import {
 	PointerEventTypes,
 } from '@babylonjs/core';
 import { isMobile } from 'react-device-detect';
+import '@babylonjs/loaders/glTF';
 
 const sphere = (scene: Scene, camera: Camera) => {
 	// Material ---------------------

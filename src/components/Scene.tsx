@@ -14,7 +14,7 @@ import getSphere from './Sphere';
 
 const SceneBuilder = () => {
 	const onSceneReady = async (scene: Scene) => {
-		const canvas = scene.getEngine().getRenderingCanvas();
+		scene.getEngine().getRenderingCanvas();
 
 		// Makes background transparent
 		scene.clearColor = new Color4(0, 0, 0, 0);
@@ -29,7 +29,6 @@ const SceneBuilder = () => {
 			scene
 		);
 		camera.setTarget(Vector3.Zero());
-		// camera.attachControl(canvas);
 
 		getSphere(scene, camera);
 
