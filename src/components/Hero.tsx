@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion, useViewportScroll, useTransform } from 'framer-motion';
+import { isMobile } from 'react-device-detect';
 
 const Hero = () => {
 	const { scrollYProgress } = useViewportScroll();
@@ -11,11 +12,24 @@ const Hero = () => {
 		['rgb(255, 255, 255)', 'rgb(0, 0, 0)']
 	);
 	const paddingTop = useTransform(scrollYProgress, [0.5, 1], ['50vh', '30vh']);
+	const scrollOpacity = useTransform(scrollYProgress, [0, 0.1], [1, 0]);
+
+	const heroRef = React.useRef<HTMLDivElement>(null);
+
+	React.useEffect(() => {
+		if (heroRef.current && !isMobile) {
+			heroRef.current.style.pointerEvents = 'none';
+		}
+	}, []);
 
 	return (
-		<div className='hero'>
+		<div className='hero' ref={heroRef}>
 			<motion.div style={{ opacity }} className='overlay' />
 			<div className='title'>
+				<motion.div
+					style={{ opacity: scrollOpacity }}
+					className='icon-scroll'
+				/>
 				<motion.h1 style={{ color }}>Immerse into light</motion.h1>
 			</div>
 			<motion.div style={{ paddingTop }} className='text'>
