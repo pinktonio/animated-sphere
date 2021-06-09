@@ -11,7 +11,7 @@ import { Animation } from '@babylonjs/core/Animations/animation';
 import { PointerEventTypes } from '@babylonjs/core/Events/pointerEvents';
 import '@babylonjs/loaders/glTF';
 
-import { isMobile } from 'react-device-detect';
+import { isMobile, isSafari, isMobileSafari } from 'react-device-detect';
 
 // Types
 import type { Scene } from '@babylonjs/core/scene';
@@ -65,7 +65,7 @@ const sphere = (scene: Scene, camera: ArcRotateCamera) => {
 				1.0,
 				camera,
 				bulb,
-				100,
+				isSafari && !isMobileSafari ? 50 : 100,
 				Texture.BILINEAR_SAMPLINGMODE
 			);
 
