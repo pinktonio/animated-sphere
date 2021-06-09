@@ -22,7 +22,8 @@ const sphere = (scene: Scene, camera: ArcRotateCamera) => {
 	const material = new StandardMaterial('sphere', scene);
 	material.diffuseTexture = new Texture('./Wall_Rock_basecolor.jpg', scene);
 	material.specularTexture = new Texture('./Wall_Rock_basecolor.jpg', scene);
-	material.diffuseColor = new Color3(1, 0, 0);
+	material.diffuseColor = new Color3(0.992, 0.11, 0.043);
+
 	material.bumpTexture = new Texture('./Wall_Rock_normal.jpg', scene);
 	material.diffuseTexture.scale(2);
 	material.diffuseTexture.level = 2;
