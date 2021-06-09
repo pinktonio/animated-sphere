@@ -70,7 +70,7 @@ const sphere = async (scene: Scene, camera: ArcRotateCamera) => {
 			);
 
 			godrays.exposure = 0.1;
-			godrays.decay = 0.96815;
+			godrays.decay = isSafari && !isMobileSafari ? 0.85 : 0.94;
 			godrays.weight = 0.98767;
 			godrays.density = 0.996;
 
