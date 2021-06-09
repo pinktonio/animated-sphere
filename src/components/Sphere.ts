@@ -17,7 +17,7 @@ import { isMobile, isSafari, isMobileSafari } from 'react-device-detect';
 import type { Scene } from '@babylonjs/core/scene';
 import type { ArcRotateCamera } from '@babylonjs/core/Cameras/arcRotateCamera';
 
-const sphere = (scene: Scene, camera: ArcRotateCamera) => {
+const sphere = async (scene: Scene, camera: ArcRotateCamera) => {
 	// Material ---------------------
 	const material = new StandardMaterial('sphere', scene);
 	material.diffuseTexture = new Texture('./Wall_Rock_basecolor.jpg', scene);
@@ -29,7 +29,7 @@ const sphere = (scene: Scene, camera: ArcRotateCamera) => {
 	material.diffuseTexture.level = 2;
 
 	// Import Mesh -----------------------
-	SceneLoader.ImportMeshAsync(
+	return SceneLoader.ImportMeshAsync(
 		'voronoi_Sphere',
 		'./',
 		'sphere_holes.gltf',

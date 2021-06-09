@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import SceneComponent from 'babylonjs-hook';
 
 // Babylonjs
@@ -13,11 +13,14 @@ import { DefaultRenderingPipeline } from '@babylonjs/core/PostProcesses/RenderPi
 
 // Components
 import getSphere from './Sphere';
+import Hero from './Hero';
 
 // Types
 import type { Scene } from '@babylonjs/core/scene';
 
 const SceneBuilder = () => {
+	const [sphereLoading, setSphereLoading] = useState(true);
+
 	const onSceneReady = async (scene: Scene) => {
 		scene.getEngine().getRenderingCanvas();
 
@@ -35,7 +38,7 @@ const SceneBuilder = () => {
 		);
 		camera.setTarget(Vector3.Zero());
 
-		getSphere(scene, camera);
+		await getSphere(scene, camera);
 
 		const pipeline = new DefaultRenderingPipeline('pipeline', true, scene, [
 			camera,
@@ -44,6 +47,8 @@ const SceneBuilder = () => {
 		pipeline.fxaaEnabled = true;
 
 		// scene.debugLayer.show();
+
+		setSphereLoading(false);
 	};
 
 	/**
@@ -52,12 +57,24 @@ const SceneBuilder = () => {
 	const onRender = (scene: Scene) => {};
 
 	return (
-		<SceneComponent
-			antialias
-			onSceneReady={onSceneReady}
-			onRender={onRender}
-			id='canvas'
-		/>
+		<>
+			<SceneComponent
+				antialias
+				onSceneReady={onSceneReady}
+				onRender={onRender}
+				id='canvas'
+			/>
+			{sphereLoading ? (
+				<div className='loading-container'>
+					<div className='loading'>
+						<div />
+						<div />
+					</div>
+				</div>
+			) : (
+				<Hero />
+			)}
+		</>
 	);
 };
 
