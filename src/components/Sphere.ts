@@ -9,7 +9,7 @@ import { SphereBuilder } from '@babylonjs/core/Meshes/Builders/sphereBuilder';
 import { VolumetricLightScatteringPostProcess } from '@babylonjs/core/PostProcesses/volumetricLightScatteringPostProcess';
 import { Animation } from '@babylonjs/core/Animations/animation';
 import { PointerEventTypes } from '@babylonjs/core/Events/pointerEvents';
-import '@babylonjs/loaders/glTF';
+import '@babylonjs/loaders/glTF/2.0/glTFLoader';
 
 import { isMobile, isSafari, isMobileSafari } from 'react-device-detect';
 
